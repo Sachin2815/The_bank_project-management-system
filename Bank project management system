@@ -1,0 +1,120 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+// Account class
+class Account {
+    string name;
+    string mobile;
+    string pin;
+    double balance;
+    int accountNumber;
+
+public:
+    Account(string name, string mobile, string pin) {
+        static int nextAccountNumber = 1;
+
+        this->name = name;
+        this->mobile = mobile;
+        this->pin = pin;
+        this->balance = 0;
+        this->accountNumber = nextAccountNumber++;
+    }
+
+    // Getters
+    string getName() const {
+        return name;
+    }
+
+    string getMobile() const {
+        return mobile;
+    }
+
+    string getPin() const {
+        return pin;
+    }
+
+    double getBalance() const {
+        return balance;
+    }
+
+    int getAccountNumber() const {
+        return accountNumber;
+    }
+
+    // Setters
+    void setName(string name) {
+        this->name = name;
+    }
+
+    void setMobile(string mobile) {
+        this->mobile = mobile;
+    }
+
+    void setPin(string pin) {
+        this->pin = pin;
+    }
+
+    // Methods
+    bool verifyPin(string pin) const {
+        return this->pin == pin;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+        cout << "Deposit of $" << amount << " was successful." << endl;
+    }
+
+    void withdraw(double amount) {
+        if (balance < amount) {
+            cout << "Insufficient balance." << endl;
+        } else {
+            balance -= amount;
+            cout << "Withdrawal of $" << amount << " was successful." << endl;
+        }
+    }
+
+    void display() const {
+        cout << "Account Details:" << endl;
+        cout << "Name: " << name << endl;
+        cout << "Mobile: " << mobile << endl;
+        cout << "Account Number: " << accountNumber << endl;
+        cout << "Balance: $" << balance << endl;
+    }
+};
+
+// Bank class
+class Bank {
+    Account* accounts[100];
+    int numberOfAccounts;
+
+public:
+    Bank() {
+        numberOfAccounts = 0;
+    }
+
+    // Methods
+    void openAccount() {
+        string name, mobile, pin;
+
+        cout << "Enter your name: ";
+        getline(cin, name);
+        cout << "Enter your mobile number: ";
+        getline(cin, mobile);
+        cout << "Enter your PIN number (4 digits): ";
+        getline(cin, pin);
+
+        Account* account = new Account(name, mobile, pin);
+        accounts[numberOfAccounts++] = account;
+
+        cout << "Account created successfully." << endl;
+        cout << "Your account number is: " << account->getAccountNumber() << endl;
+    }
+
+    Account* getAccount(int accountNumber) const {
+        for (int i = 0; i < numberOfAccounts; i++) {
+            if (accounts[i]->getAccountNumber() == accountNumber) {
+                return accounts[i];
+            }
+        }
