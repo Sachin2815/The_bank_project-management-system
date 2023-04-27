@@ -118,3 +118,59 @@ public:
                 return accounts[i];
             }
         }
+        return NULL;
+    }
+
+    void showAccountDetails(int accountNumber, string pin) const {
+        Account* account = getAccount(accountNumber);
+
+        if (account == NULL) {
+            cout << "Invalid account number." << endl;
+        } else if (!account->verifyPin(pin)) {
+            cout << "Invalid PIN number." << endl;
+        } else {
+            account->display();
+        }
+    }
+};
+int main() {
+    Bank bank;
+
+    int choice;
+    int accountNumber;
+    string pin;
+
+    do {
+        cout << "\nWelcome to the Bank!" << endl;
+        cout << "1. Open an account" << endl;
+        cout << "2. Display account details" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
+            case 1:
+                bank.openAccount();
+                break;
+
+            case 2:
+                cout << "Enter your account number: ";
+                cin >> accountNumber;
+                cout << "Enter your PIN number: ";
+                cin >> pin;
+                bank.showAccountDetails(accountNumber, pin);
+                break;
+
+            case 3:
+                cout << "Thank you for using the Bank!" << endl;
+                break;
+
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+                break;
+        }
+    } while (choice != 3);
+
+    return 0;
+}
